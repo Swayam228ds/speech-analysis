@@ -10,6 +10,7 @@ def process_job(job_id, video_id, video_path):
     try:
         # Mark as processing_audio
         cursor.execute("UPDATE processing_jobs SET status='processing', stage='analyzing_audio_video', progress=10 WHERE id=%s;", (job_id,))
+        cursor.execute("UPDATE videos SET processing_status='processing' WHERE id=%s;", (int(video_id),))
         connection.commit()
 
         # Run combined pipeline
@@ -86,7 +87,8 @@ def process_job(job_id, video_id, video_path):
     except Exception as e:
         connection.rollback()
         print(f"Error processing job {job_id}: {e}")
-        cursor.execute("UPDATE processing_jobs SET status='failed', stage='error' WHERE id=%s;", (job_id,))
+        cursor.execute("UPDATE processing_jobs SET status='failed', stage='error', error_message=%s WHERE id=%s;", (str(e)[:1000], job_id))
+        cursor.execute("UPDATE videos SET processing_status='failed' WHERE id=%s;", (int(video_id),))
         connection.commit()
     finally:
         cursor.close()

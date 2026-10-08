@@ -1,8 +1,9 @@
 # Speech Analysis Platform
 
-This is the backend for a Speech Analysis Platform, built with FastAPI and PostgreSQL. It allows users to authenticate, upload videos, processes the audio to extract speech metrics, and stores the results for later retrieval.
+This is a Speech Analysis Platform built with FastAPI and PostgreSQL. Users sign in, upload videos and get speech and on-camera feedback. The web frontend in `frontend/` is served by the same FastAPI app: run the API and open http://localhost:8000.
 
 ## Features Implemented
+- **Web App**: sign in and registration, a video dashboard, drag-and-drop upload with progress, live processing status, and a results page with a video player. Results include a clickable event timeline (pauses, filler words, looking away, hand movement), metrics, and a transcript that highlights each word as the video plays.
 - **Authentication**: JWT-based login and registration. Data is isolated per user.
 - **Background Processing**: Video processing is handled asynchronously via a polling worker script to prevent API blocking.
 - **Robust VAD**: Silero VAD integration for precise speech and pause detection.
@@ -12,8 +13,9 @@ This is the backend for a Speech Analysis Platform, built with FastAPI and Postg
 ## Project Structure
 ```
 .
+├── frontend/                 # Web app (plain HTML/CSS/JS, no build step), served at "/"
 ├── app/
-│   ├── main.py               # FastAPI application
+│   ├── main.py               # FastAPI application (API routes + serves frontend/)
 │   ├── database.py           # DB connection handling
 │   ├── routers/              # API Endpoints (auth.py, videos.py)
 │   ├── services/             # Core logic (video_processor, speech_analyzer, pause_analyzer)
@@ -54,15 +56,18 @@ This is the backend for a Speech Analysis Platform, built with FastAPI and Postg
    DB_PASS=Ak1979
    DB_PORT=5432
    SECRET_KEY=your-super-secret-jwt-key
+   # Optional: full path to ffmpeg.exe if ffmpeg is not on your PATH
+   FFMPEG_BIN=C:\path\to\ffmpeg\bin\ffmpeg.exe
    ```
 
 5. **Database Setup:**
    Run the `queries/migration.sql` script against your PostgreSQL instance to create the necessary tables and update the existing `analyses` table.
 
-6. **Run the API:**
+6. **Run the API (also serves the web app):**
    ```bash
    uvicorn app.main:app --reload
    ```
+   Open http://localhost:8000 for the web app. The API docs are at http://localhost:8000/docs, and the old welcome message moved from `/` to `/api`.
 
 7. **Run the Background Worker:**
    Open a separate terminal, activate the virtual environment, and run:

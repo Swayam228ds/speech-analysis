@@ -44,7 +44,7 @@ def get_video_analysis(video_id: int, current_user: dict = Depends(get_current_u
             "transcript": speech_row[0],
             "word_count": speech_row[1],
             "words_per_minute": float(speech_row[2]) if speech_row[2] else 0.0,
-            "speaking_time": float(speech_row[3]) if speech_row[3] else 0.0,
+            "speaking_time_percentage": float(speech_row[3]) if speech_row[3] else 0.0,
             "pause_count": speech_row[4],
             "average_pause_duration": float(speech_row[5]) if speech_row[5] else 0.0,
             "longest_pause": float(speech_row[6]) if speech_row[6] else 0.0,

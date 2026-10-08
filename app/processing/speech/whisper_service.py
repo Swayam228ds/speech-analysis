@@ -1,8 +1,12 @@
 import os
 import whisper
 
-FFMPEG_PATH = r"C:\Users\Abhinay\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.1-full_build\bin"
-os.environ["PATH"] = FFMPEG_PATH + os.pathsep + os.environ["PATH"]
+from app.utils.config import settings
+
+# Whisper runs "ffmpeg" from PATH; if a full path is configured, put its folder on PATH.
+FFMPEG_DIR = os.path.dirname(settings.FFMPEG_BIN)
+if FFMPEG_DIR:
+    os.environ["PATH"] = FFMPEG_DIR + os.pathsep + os.environ["PATH"]
 
 model = whisper.load_model("base")
 

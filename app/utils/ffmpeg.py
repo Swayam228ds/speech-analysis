@@ -1,6 +1,6 @@
 import subprocess
 import os
-
+from app.utils.config import settings
 
 
 
@@ -9,7 +9,7 @@ def extract_audio(video_path):
     audio_path = video_path.rsplit(".", 1)[0] + ".wav"
 
     command = [
-        r"C:\Users\Abhinay\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.1-full_build\bin\ffmpeg.exe",
+        settings.FFMPEG_BIN,
         "-i", video_path,
         "-vn",
         "-acodec", "pcm_s16le",
