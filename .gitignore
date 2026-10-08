@@ -1,0 +1,22 @@
+# Environments
+venv/
+env/
+.venv/
+.env
+
+# Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# User Uploads / Data
+uploads/
+sample/
+
+# Scratch/System
+scratch/
+.system_generated/
+*.log
+*.sqlite3
